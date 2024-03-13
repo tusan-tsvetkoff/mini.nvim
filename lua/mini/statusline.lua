@@ -285,10 +285,10 @@ MiniStatusline.section_git = function(args)
 end
 
 --- Section for Git blame
-MiniStatusline.git_blame = function(args)
+MiniStatusline.section_git_blame = function(args)
   if H.isnt_normal_buffer() then return '' end
 
-  local ok, git_blame = pcall(require, 'git-blame')
+  local ok, git_blame = pcall(require, 'gitblame')
   if not ok then return '' end
 
   vim.g.gitblame_display_virtual_text = 0
