@@ -283,6 +283,15 @@ end
 
 --- Section for Git blame
 MiniStatusline.git_blame = function(args)
+  if H.isnt_normal_buffer() then return '' end
+
+  local ok, git_blame = pcall(require, 'git-blame')
+  if not ok then return '' end
+
+  vim.g.gitblame_display_virtual_text = 0
+  local git_blame_text = git_blame.is_blame_text_available() and git_blame.get_current_blame_text() or ''
+
+  return git_blame_text
 end
 
 --- Section for Neovim's builtin diagnostics
