@@ -281,6 +281,10 @@ MiniStatusline.section_git = function(args)
   return string.format('%s %s %s', icon, head, signs)
 end
 
+--- Section for Git blame
+MiniStatusline.git_blame = function(args)
+end
+
 --- Section for Neovim's builtin diagnostics
 ---
 --- Shows nothing if there is no attached LSP clients or for short output.
