@@ -286,10 +286,9 @@ end
 
 --- Section for Git blame
 MiniStatusline.section_git_blame = function(args)
-  if H.isnt_normal_buffer() then return '' end
+  if H.isnt_normal_buffer() or H.has_no_gitblame() then return '' end
 
-  local ok, git_blame = pcall(require, 'gitblame')
-  if not ok then return '' end
+  local git_blame = require('gitblame')
 
   vim.g.gitblame_display_virtual_text = 0
   local git_blame_text = git_blame.is_blame_text_available() and git_blame.get_current_blame_text() or ''
@@ -617,6 +616,22 @@ H.get_filetype_icon = function()
 
   local file_name, file_ext = vim.fn.expand('%:t'), vim.fn.expand('%:e')
   return devicons.get_icon(file_name, file_ext, { default = true })
+end
+
+H.has_no_gitblame = function()
+  local ok, _ = pcall(require, 'gitblame')
+  return not ok
+end
+
+H.configure_gitblame = function()
+  vim.g.gitblame_display_virtual_text = 0
+  vim.g.gitblame_date_format = '%r'
+  vim.g.gitblame_message_template = '<summary> • <date> • <author>'
+end
+
+H.get_commit_icon = function()
+  -- Skip if NerdFonts is disabled
+  if not H.get_config().use_icons then return '' end
 end
 
 H.has_no_lsp_attached = function() return (H.n_attached_lsp[vim.api.nvim_get_current_buf()] or 0) == 0 end
