@@ -441,6 +441,19 @@ H.diagnostic_levels = {
 -- Count of attached LSP clients per buffer id
 H.n_attached_lsp = {}
 
+-- Git blame icons
+H.git_blame_icons = {
+  { type = 'date', icon = '󰃭' },
+  { type = 'feat', icon = '󱉂' },
+  { type = 'fix', icon = '󰃤' },
+  { type = 'docs', icon = '󰈙' },
+  { type = 'refactor', icon = '󰅩' },
+  { type = 'style', icon = '󰉼' },
+  { type = 'style', icon = '󰙨' },
+  { type = 'ci', icon = '' },
+  { type = 'default', icon = '' },
+}
+
 -- Helper functionality =======================================================
 -- Settings -------------------------------------------------------------------
 H.setup_config = function(config)
