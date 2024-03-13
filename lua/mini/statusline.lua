@@ -157,6 +157,9 @@ MiniStatusline.config = {
   -- Whether to use icons by default
   use_icons = true,
 
+  --Whether to use `git_blame`
+  use_git_blame = false,
+
   -- Whether to set Vim's settings for statusline (make it always shown with
   -- 'laststatus' set to 2). To use global statusline in Neovim>=0.7.0, set
   -- this to `false` and 'laststatus' to 3.
