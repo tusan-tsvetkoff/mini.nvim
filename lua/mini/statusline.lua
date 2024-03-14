@@ -443,15 +443,15 @@ H.n_attached_lsp = {}
 
 -- Git blame icons
 H.git_blame_icons = {
-  { type = 'date', icon = '󰃭' },
-  { type = 'feat', icon = '󱉂' },
-  { type = 'fix', icon = '󰃤' },
-  { type = 'docs', icon = '󰈙' },
-  { type = 'refactor', icon = '󰅩' },
-  { type = 'style', icon = '󰉼' },
-  { type = 'style', icon = '󰙨' },
-  { type = 'ci', icon = '' },
-  { type = 'default', icon = '' },
+  ['date'] = '󰃭',
+  ['feat'] = '󱉂',
+  ['fix'] = '󰃤',
+  ['docs'] = '󰈙',
+  ['refactor'] = '󰅩',
+  ['style'] = '󰉼',
+  ['test'] = '󰙨',
+  ['ci'] = '',
+  ['default'] = '',
 }
 
 -- Helper functionality =======================================================
