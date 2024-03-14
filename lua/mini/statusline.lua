@@ -642,9 +642,36 @@ H.configure_gitblame = function()
   vim.g.gitblame_message_template = '<summary> • <date> • <author>'
 end
 
-H.get_commit_icon = function()
+---@param blame string
+---@return string
+H.format_gitblame = function(blame)
+  if blame == nil or blame == '' then return '' end
+
+  local split = vim.split(blame, '•')
+  local summary = split[1]
+  local author = split[3]
+  local date = split[2]
+
+  local icon = H.get_commit_icon(summary)
+
+  local truncated_summary = #summary > 20 and summary:sub(1, 20) .. '...' or summary
+
+  return string.format('%s %s•%s•%s', icon, truncated_summary, date, author)
+end
+
+---@param commit string
+H.get_commit_icon = function(commit)
   -- Skip if NerdFonts is disabled
   if not H.get_config().use_icons then return '' end
+  return H.git_blame_icons[commit:match('%w+', 1)] or H.git_blame_icons.default
+end
+
+H.truncate_formatted_blame = function(blame)
+  local split_blame = vim.split(blame, '•')
+  local summary = split_blame[1]
+  local author = split_blame[3]
+
+  return string.format('%s•%s', summary, author)
 end
 
 H.has_no_lsp_attached = function() return (H.n_attached_lsp[vim.api.nvim_get_current_buf()] or 0) == 0 end
