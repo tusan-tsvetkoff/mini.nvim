@@ -284,16 +284,20 @@ MiniStatusline.section_git = function(args)
   return string.format('%s %s %s', icon, head, signs)
 end
 
+---@param args __statusline_args
+---
 --- Section for Git blame
 MiniStatusline.section_git_blame = function(args)
   if H.isnt_normal_buffer() or H.has_no_gitblame() then return '' end
 
   local git_blame = require('gitblame')
-
-  vim.g.gitblame_display_virtual_text = 0
   local git_blame_text = git_blame.is_blame_text_available() and git_blame.get_current_blame_text() or ''
+  if git_blame_text:find('Not Committed Yet', 1) then return git_blame_text end
 
-  return git_blame_text
+  local formatted_blame = H.format_gitblame(git_blame_text)
+  if MiniStatusline.is_truncated(args.trunc_width) then return H.truncate_formatted_blame(formatted_blame) end
+
+  return formatted_blame
 end
 
 --- Section for Neovim's builtin diagnostics
