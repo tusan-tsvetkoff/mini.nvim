@@ -140,6 +140,9 @@ Default values:
     -- Whether to use icons by default
     use_icons = true,
 
+    --Whether to use `git_blame`
+    use_git_blame = false,
+
     -- Whether to set Vim's settings for statusline (make it always shown with
     -- 'laststatus' set to 2). To use global statusline in Neovim>=0.7.0, set
     -- this to `false` and 'laststatus' to 3.
@@ -226,6 +229,14 @@ Return ~
 `(string)` Section string.
 
 ------------------------------------------------------------------------------
+                                            *MiniStatusline.section_git_blame()*
+                   `MiniStatusline.section_git_blame`({args})
+Parameters ~
+{args} `(table)` Section arguments.
+
+Section for Git blame
+
+------------------------------------------------------------------------------
                                           *MiniStatusline.section_diagnostics()*
                   `MiniStatusline.section_diagnostics`({args})
 Section for Neovim's builtin diagnostics
@@ -307,6 +318,20 @@ Parameters ~
 
 Return ~
 `(string)` Section string.
+
+------------------------------------------------------------------------------
+                                                           *H.format_gitblame()*
+                          `H.format_gitblame`({blame})
+Parameters ~
+{blame} `(string)`
+Return ~
+`(string)`
+
+------------------------------------------------------------------------------
+                                                           *H.get_commit_icon()*
+                         `H.get_commit_icon`({commit})
+Parameters ~
+{commit} `(string)`
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:

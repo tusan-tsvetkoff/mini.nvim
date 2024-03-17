@@ -291,6 +291,7 @@ MiniStatusline.section_git_blame = function(args)
   if H.isnt_normal_buffer() or H.has_no_gitblame() then return '' end
 
   local git_blame = require('gitblame')
+  H.configure_gitblame()
   local git_blame_text = git_blame.is_blame_text_available() and git_blame.get_current_blame_text() or ''
   if git_blame_text:find('Not Committed Yet', 1) then return git_blame_text end
 
@@ -314,19 +315,21 @@ end
 MiniStatusline.section_diagnostics = function(args)
   local dont_show = MiniStatusline.is_truncated(args.trunc_width) or H.isnt_normal_buffer() or H.has_no_lsp_attached()
   if dont_show or H.diagnostic_is_disabled() then return '' end
+  local use_icons = H.get_config().use_icons
+  local diagnostic_levels = use_icons and H.diagnostic_levels_icons or H.diagnostic_levels
 
   -- Construct string parts
   local count = H.diagnostic_get_count()
   local severity, t = vim.diagnostic.severity, {}
-  for _, level in ipairs(H.diagnostic_levels) do
+  for _, level in ipairs(diagnostic_levels) do
     local n = count[severity[level.name]] or 0
     -- Add level info only if diagnostic is present
     if n > 0 then table.insert(t, string.format(' %s%s', level.sign, n)) end
   end
 
-  local icon = args.icon or (H.get_config().use_icons and '' or 'LSP')
-  if vim.tbl_count(t) == 0 then return ('%s -'):format(icon) end
-  return string.format('%s%s', icon, table.concat(t, ''))
+  -- local icon = args.icon or (use_icons and '' or 'LSP')
+  -- if vim.tbl_count(t) == 0 then return ('%s -'):format(icon) end
+  return string.format('%s', table.concat(t, ''))
 end
 
 --- Section for file name
@@ -440,6 +443,13 @@ H.diagnostic_levels = {
   { name = 'WARN', sign = 'W' },
   { name = 'INFO', sign = 'I' },
   { name = 'HINT', sign = 'H' },
+}
+
+H.diagnostic_levels_icons = {
+  { name = 'ERROR', sign = '' },
+  { name = 'WARN', sign = '' },
+  { name = 'INFO', sign = '' },
+  { name = 'HINT', sign = '󰌵' },
 }
 
 -- Count of attached LSP clients per buffer id
@@ -671,13 +681,7 @@ H.get_commit_icon = function(commit)
   return H.git_blame_icons[commit:match('%w+', 1)] or H.git_blame_icons.default
 end
 
-H.truncate_formatted_blame = function(blame)
-  local split_blame = vim.split(blame, '•')
-  local summary = split_blame[1]
-  local author = split_blame[3]
-
-  return string.format('%s•%s', summary, author)
-end
+H.truncate_formatted_blame = function(blame) return string.format('%s', vim.split(blame, '•')[1]) end
 
 H.has_no_lsp_attached = function() return (H.n_attached_lsp[vim.api.nvim_get_current_buf()] or 0) == 0 end
 if vim.fn.has('nvim-0.8') == 0 then H.has_no_lsp_attached = function() return #vim.lsp.buf_get_clients() == 0 end end
